@@ -25,6 +25,5 @@ public class Invite {
     @ManyToOne
     private Event event;
     @ManyToOne
-    @Column(name = "user_id")
     private User receiver;
 }
