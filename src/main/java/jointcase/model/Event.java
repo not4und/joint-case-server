@@ -1,19 +1,11 @@
 package jointcase.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "events")
@@ -36,17 +32,27 @@ public class Event {
     private Long id;
     private String name;
     private String description;
-    private String inviteLink;
-    private LocalDateTime dateTime;
-    @OneToMany
-    private List<AttachedFile> files;
-    @ManyToOne(fetch = FetchType.LAZY)
+    private LocalDateTime formDateTime;
+    private LocalDateTime toDateTime;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    @ManyToOne
     private Category category;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User owner;
+    private Integer slots;
     @ManyToMany
     @JoinTable(name = "events_users",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> members;
+    @OneToMany
+    private List<AttachedFile> files;
+
+    public enum Status {
+        IN_PROCESS,
+        PENDING,
+        CLOSED,
+        FULL
+    }
 }
