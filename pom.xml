@@ -19,6 +19,7 @@
         <spring.security.version>5.8.1</spring.security.version>
         <hibernate.version>5.6.14.Final</hibernate.version>
         <jackson.version>2.14.2</jackson.version>
+        <lombok.version>1.18.24</lombok.version>
         <mockito.version>5.1.1</mockito.version>
     </properties>
 
@@ -94,6 +95,12 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -178,6 +185,13 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
