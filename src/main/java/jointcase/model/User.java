@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,6 +19,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @ToString
 public class User {
     @Id
@@ -31,8 +33,6 @@ public class User {
     private String email;
     @ToString.Exclude
     private String password;
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
     @ManyToMany(mappedBy = "members")
     private Set<Event> events;
 }
