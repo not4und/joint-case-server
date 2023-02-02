@@ -1,8 +1,8 @@
 package jointcase.model;
 
-import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "statuses")
