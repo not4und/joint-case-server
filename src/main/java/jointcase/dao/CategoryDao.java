@@ -6,7 +6,6 @@ import jointcase.model.Category;
 
 public interface CategoryDao {
     Category add(Category category);
-    Category update(Category category);
 
     Optional<Category> get(Long id);
 

@@ -2,20 +2,16 @@ package jointcase.dao.impl;
 
 import java.util.List;
 import java.util.Optional;
-
 import jointcase.exception.DataProcessingException;
+import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+@AllArgsConstructor
 public abstract class AbstractDao<T> {
     protected final SessionFactory factory;
     private final Class<T> clazz;
-
-    public AbstractDao(SessionFactory factory, Class<T> clazz) {
-        this.factory = factory;
-        this.clazz = clazz;
-    }
 
     public T add(T t) {
         Session session = null;
@@ -64,8 +60,8 @@ public abstract class AbstractDao<T> {
 
     public List<T> getAll() {
         try (Session session = factory.openSession()) {
-             return session.createQuery("FROM " + clazz.getSimpleName(), clazz)
-                     .getResultList();
+            return session.createQuery("FROM " + clazz.getSimpleName(), clazz)
+                    .getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all "
                     + clazz.getSimpleName() + "s from DB.", e);
@@ -74,13 +70,13 @@ public abstract class AbstractDao<T> {
 
     public void delete(Long id) {
         Session session = null;
-        Transaction transaction  = null;
-        try{
+        Transaction transaction = null;
+        try {
             session = factory.openSession();
             transaction = session.beginTransaction();
             session.delete(id);
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             transactionRollback(transaction);
             throw new DataProcessingException("Can't delete "
                     + clazz.getSimpleName() + ": " + id, e);

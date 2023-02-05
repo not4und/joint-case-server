@@ -9,5 +9,7 @@ public interface StatusDao {
 
     Optional<Status> get(Long id);
 
+    Optional<Status> getByName(Status.StatusType name);
+
     List<Status> getAll();
 }

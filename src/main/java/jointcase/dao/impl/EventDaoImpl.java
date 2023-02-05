@@ -5,6 +5,7 @@ import java.util.Optional;
 import jointcase.dao.EventDao;
 import jointcase.exception.DataProcessingException;
 import jointcase.model.Event;
+import jointcase.model.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -19,8 +20,10 @@ public class EventDaoImpl extends AbstractDao<Event> implements EventDao {
     public Optional<Event> get(Long id) {
         try (Session session = factory.openSession()) {
             return session.createQuery("FROM Event e "
-                        + "JOIN FETCH e.files "
-                        + "JOIN FETCH e.members ", Event.class)
+                        + "LEFT JOIN FETCH e.files "
+                        + "LEFT JOIN FETCH e.members "
+                        + "WHERE e.status != :closed", Event.class)
+                    .setParameter("closed", Status.StatusType.CLOSED)
                     .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get event by id: " + id, e);
@@ -28,12 +31,19 @@ public class EventDaoImpl extends AbstractDao<Event> implements EventDao {
     }
 
     @Override
-    public List<Event> getAll() {
+    public List<Event> getAllByCategoryAndUser(Long categoryId, Long userId, boolean isPrivate) {
         try (Session session = factory.openSession()) {
-            return session.createQuery("FROM Event e ", Event.class)
+            return session.createQuery("FROM Event e "
+                         + "LEFT JOIN FETCH e.members m "
+                         + "WHERE e.category.id = :categoryId AND (e.owner.id = :userId "
+                         + "OR m.id = :userId) "
+                         + (isPrivate ? "" : "AND e.isPrivate = false"),
+                            Event.class)
+                    .setParameter("categoryId", categoryId)
+                    .setParameter("userId", userId)
                     .getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get all events from DB.", e);
+            throw new DataProcessingException("Can't get event by category id: " + categoryId, e);
         }
     }
 }

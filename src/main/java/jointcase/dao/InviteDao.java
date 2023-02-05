@@ -9,7 +9,7 @@ public interface InviteDao {
 
     Optional<Invite> get(Long id);
 
-    List<Invite> getAll();
+    List<Invite> getAllByUser(Long id);
 
     void delete(Long id);
 }
