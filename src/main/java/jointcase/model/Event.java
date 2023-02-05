@@ -32,7 +32,7 @@ public class Event {
     private Long id;
     private String name;
     private String description;
-    private LocalDateTime formDateTime;
+    private LocalDateTime fromDateTime;
     private LocalDateTime toDateTime;
     @ManyToOne
     private Status status;
@@ -40,7 +40,9 @@ public class Event {
     private Category category;
     @ManyToOne
     private User owner;
-    private Integer slots;
+    private int slots;
+    private boolean isFull;
+    private boolean isPrivate;
     @ManyToMany
     @JoinTable(name = "events_users",
             joinColumns = @JoinColumn(name = "event_id"),

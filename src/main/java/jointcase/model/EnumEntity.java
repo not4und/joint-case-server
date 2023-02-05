@@ -8,10 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @MappedSuperclass
 @Data
+@NoArgsConstructor
 @ToString
 public class EnumEntity<T> {
     @Id
